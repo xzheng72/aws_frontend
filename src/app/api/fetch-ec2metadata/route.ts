@@ -15,23 +15,32 @@ export async function GET() {
         cache: 'no-store',
       }
     );
-    timeout(500);
+    timeout(3000);
 
     if (response_AZ.ok && response_InstanceId.ok) {
-      const availabilityZone = await response_AZ.json();
-      const instanceId = await response_InstanceId.json();
-
-      return NextResponse.json({ availabilityZone, instanceId });
+      const availabilityZone = await response_AZ.text();
+      const instanceId = await response_InstanceId.text();
+      if (availabilityZone && instanceId) {
+        return NextResponse.json({ availabilityZone, instanceId });
+      } else {
+        return NextResponse.json({
+          availabilityZone: 'Empty data',
+          instanceId: 'Empty data',
+        });
+      }
     } else {
       return NextResponse.json(
-        { error: 'Failed to fetch availability zone' },
+        { error: 'The response from http://169.254.169.254 is not ok' },
         { status: 500 }
       );
     }
   } catch (error) {
-    console.error('Error fetching EC2 metadata:', error);
+    console.error(
+      'Error sending GET Request to :http://169.254.169.254',
+      error
+    );
     return NextResponse.json(
-      { error: 'Error fetching EC2 metadata' },
+      { error: 'Error sending GET Request to :http://169.254.169.254' },
       { status: 500 }
     );
   }
