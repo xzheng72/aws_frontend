@@ -4,8 +4,8 @@ import { BASE_URL } from '@/api/apiUtils';
 import ProductList from '@/components/ProductList';
 import { Box, Container, CssBaseline, Grid, Typography } from '@mui/joy';
 import ProductFormComponent from '@/components/ProductForm';
-
-//import EC2MetadataDisplay from '@/components/EC2MetadataDisplay';
+import { EC2Metadata } from '@/types/types';
+import EC2MetadataDisplay from '@/components/EC2MetadataDisplay';
 
 // Fetch data from the API
 const fetchProducts = async () => {
@@ -39,8 +39,8 @@ const createNewProduct = async (productData: FormData) => {
 //     setTimeout(() => reject(new Error('Request timed out')), ms)
 //   );
 
-// Fetch instance Id
-// const fetchInstanceId = async (): Promise<unknown | null> => {
+// // Fetch instance Id
+// const fetchInstanceId = async () => {
 //   try {
 //     const response = await Promise.race([
 //       fetch('http://169.254.169.254/latest/meta-data/instance-id', {
@@ -59,8 +59,8 @@ const createNewProduct = async (productData: FormData) => {
 //   }
 // };
 
-// // Fetch instance Id
-// const fetchAZ = async (): Promise<unknown | null> => {
+// // // Fetch instance Id
+// const fetchAZ = async ()=> {
 //   try {
 //     const response = await Promise.race([
 //       fetch(
@@ -82,18 +82,32 @@ const createNewProduct = async (productData: FormData) => {
 
 export default async function Home() {
   //fetch metadata
-  // const instanceId = await fetchInstanceId();
-  // const az = await fetchAZ();
+  let instanceId: string = '';
+  let az: string = '';
+  try {
+    const res = await fetch('/api/fetch-ec2metadata');
+    if (res.ok) {
+      const data = (await res.json()) as EC2Metadata;
+      instanceId = data.instanceId;
+      az = data.availabilityZone;
+    } else {
+      instanceId = 'Response is not ok';
+      az = 'Response is not ok';
+    }
+  } catch (err) {
+    console.error('Error Fetching Metadata', err);
+    instanceId = err as string;
+    az = err as string;
+  }
 
   const products = await fetchProducts();
 
-  //console.log(products);
   return (
     <div>
       <Grid container spacing={2}>
         {/* Left Side */}
         <Grid xs={6} marginTop={'20px'}>
-          {/* {instanceId && az ? (
+          {instanceId && az ? (
             <EC2MetadataDisplay
               frontEnd
               instanceId={instanceId as string}
@@ -105,7 +119,7 @@ export default async function Home() {
               instanceId={'Error Fetching instanceId'}
               availabilityZone={'Error Fetching AZ'}
             />
-          )} */}
+          )}
           {/* Top Header */}
           <>
             <CssBaseline />
