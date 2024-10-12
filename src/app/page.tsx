@@ -85,7 +85,9 @@ export default async function Home() {
   let instanceId: string = '';
   let az: string = '';
   try {
-    const res = await fetch('/api/fetch-ec2metadata');
+    const res = await fetch('http://localhost:3000/api/fetch-ec2metadata', {
+      method: 'GET',
+    });
     if (res.ok) {
       const data = (await res.json()) as EC2Metadata;
       instanceId = data.instanceId;

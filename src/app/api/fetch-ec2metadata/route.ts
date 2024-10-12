@@ -18,8 +18,8 @@ export async function GET() {
     timeout(500);
 
     if (response_AZ.ok && response_InstanceId.ok) {
-      const availabilityZone = await response_AZ.text();
-      const instanceId = await response_InstanceId.text();
+      const availabilityZone = await response_AZ.json();
+      const instanceId = await response_InstanceId.json();
 
       return NextResponse.json({ availabilityZone, instanceId });
     } else {
