@@ -5,7 +5,7 @@ import ProductList from '@/components/ProductList';
 import { Box, Container, CssBaseline, Grid, Typography } from '@mui/joy';
 import ProductFormComponent from '@/components/ProductForm';
 
-import EC2MetadataDisplay from '@/components/EC2MetadataDisplay';
+//import EC2MetadataDisplay from '@/components/EC2MetadataDisplay';
 
 // Fetch data from the API
 const fetchProducts = async () => {
@@ -34,56 +34,56 @@ const createNewProduct = async (productData: FormData) => {
   }
 };
 
-const timeout = (ms: number): Promise<never> =>
-  new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('Request timed out')), ms)
-  );
+// const timeout = (ms: number): Promise<never> =>
+//   new Promise((_, reject) =>
+//     setTimeout(() => reject(new Error('Request timed out')), ms)
+//   );
 
 // Fetch instance Id
-const fetchInstanceId = async (): Promise<unknown | null> => {
-  try {
-    const response = await Promise.race([
-      fetch('http://169.254.169.254/latest/meta-data/instance-id', {
-        cache: 'no-store',
-      }),
-      timeout(500),
-    ]);
+// const fetchInstanceId = async (): Promise<unknown | null> => {
+//   try {
+//     const response = await Promise.race([
+//       fetch('http://169.254.169.254/latest/meta-data/instance-id', {
+//         cache: 'no-store',
+//       }),
+//       timeout(500),
+//     ]);
 
-    if ((response as Response).ok) {
-      return (response as Response).json();
-    }
-    return null;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
+//     if ((response as Response).ok) {
+//       return (response as Response).json();
+//     }
+//     return null;
+//   } catch (error) {
+//     console.log(error);
+//     return null;
+//   }
+// };
 
-// Fetch instance Id
-const fetchAZ = async (): Promise<unknown | null> => {
-  try {
-    const response = await Promise.race([
-      fetch(
-        'http://169.254.169.254/latest/meta-data/placement/availability-zone',
-        { cache: 'no-store' }
-      ),
-      timeout(500),
-    ]);
+// // Fetch instance Id
+// const fetchAZ = async (): Promise<unknown | null> => {
+//   try {
+//     const response = await Promise.race([
+//       fetch(
+//         'http://169.254.169.254/latest/meta-data/placement/availability-zone',
+//         { cache: 'no-store' }
+//       ),
+//       timeout(500),
+//     ]);
 
-    if ((response as Response).ok) {
-      return (response as Response).json();
-    }
-    return null;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
+//     if ((response as Response).ok) {
+//       return (response as Response).json();
+//     }
+//     return null;
+//   } catch (error) {
+//     console.log(error);
+//     return null;
+//   }
+// };
 
 export default async function Home() {
   //fetch metadata
-  const instanceId = await fetchInstanceId();
-  const az = await fetchAZ();
+  // const instanceId = await fetchInstanceId();
+  // const az = await fetchAZ();
 
   const products = await fetchProducts();
 
@@ -93,7 +93,7 @@ export default async function Home() {
       <Grid container spacing={2}>
         {/* Left Side */}
         <Grid xs={6} marginTop={'20px'}>
-          {instanceId && az ? (
+          {/* {instanceId && az ? (
             <EC2MetadataDisplay
               frontEnd
               instanceId={instanceId as string}
@@ -105,7 +105,7 @@ export default async function Home() {
               instanceId={'Error Fetching instanceId'}
               availabilityZone={'Error Fetching AZ'}
             />
-          )}
+          )} */}
           {/* Top Header */}
           <>
             <CssBaseline />
