@@ -7,7 +7,7 @@ import ProductFormComponent from '@/components/ProductForm';
 import { EC2Metadata } from '@/types/types';
 import EC2MetadataDisplay from '@/components/EC2MetadataDisplay';
 
-// Fetch data from the API
+// on the web server, hit the backend API /products
 const fetchProducts = async () => {
   const response = await fetch(`${BASE_URL}/products`, { cache: 'no-store' }); // Disable caching to ensure fresh data is fetched
   if (!response.ok) {
@@ -34,54 +34,8 @@ const createNewProduct = async (productData: FormData) => {
   }
 };
 
-// const timeout = (ms: number): Promise<never> =>
-//   new Promise((_, reject) =>
-//     setTimeout(() => reject(new Error('Request timed out')), ms)
-//   );
-
-// // Fetch instance Id
-// const fetchInstanceId = async () => {
-//   try {
-//     const response = await Promise.race([
-//       fetch('http://169.254.169.254/latest/meta-data/instance-id', {
-//         cache: 'no-store',
-//       }),
-//       timeout(500),
-//     ]);
-
-//     if ((response as Response).ok) {
-//       return (response as Response).json();
-//     }
-//     return null;
-//   } catch (error) {
-//     console.log(error);
-//     return null;
-//   }
-// };
-
-// // // Fetch instance Id
-// const fetchAZ = async ()=> {
-//   try {
-//     const response = await Promise.race([
-//       fetch(
-//         'http://169.254.169.254/latest/meta-data/placement/availability-zone',
-//         { cache: 'no-store' }
-//       ),
-//       timeout(500),
-//     ]);
-
-//     if ((response as Response).ok) {
-//       return (response as Response).json();
-//     }
-//     return null;
-//   } catch (error) {
-//     console.log(error);
-//     return null;
-//   }
-// };
-
 export default async function Home() {
-  //fetch metadata
+  //fetch EC2 metadata from the web server
   let instanceId: string = '';
   let az: string = '';
   try {
@@ -102,8 +56,8 @@ export default async function Home() {
     az = err as string;
   }
 
+  //fetch products and render
   const products = await fetchProducts();
-
   return (
     <div>
       <Grid container spacing={2}>

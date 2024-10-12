@@ -18,11 +18,6 @@ export async function GET() {
     timeout(3000);
 
     if (response_AZ.ok && response_InstanceId.ok) {
-      console.log('-------');
-      console.log('AZ response:', response_AZ);
-      console.log('Instance Id response:', response_InstanceId);
-      console.log('-------');
-
       const availabilityZone = await response_AZ.text();
       const instanceId = await response_InstanceId.text();
 
