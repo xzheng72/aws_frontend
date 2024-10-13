@@ -120,7 +120,7 @@ const ProductForm = (props: Props) => {
             />
           )}
           <Button variant="outlined" component="label">
-            {image ? 'Change' : 'Upload an Image'}
+            {image ? 'Change' : 'Upload an Image (<1MB)'}
             <input type="file" hidden onChange={handleFileChange} />
           </Button>
         </Box>
