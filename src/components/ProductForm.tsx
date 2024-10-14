@@ -8,6 +8,7 @@ interface Props {
   createNewProduct: (productData: FormData) => Promise<void>;
 }
 
+// comment
 const ProductForm = (props: Props) => {
   const router = useRouter();
   // State to hold the input values
